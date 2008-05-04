@@ -1,7 +1,7 @@
-# ActsAsFriendable
+# ActsAsTopFriend
 module Sergi #:nocdoc:
   module Acts #:nocdoc:
-    module Friendable #:nocdoc:
+    module TopFriend #:nocdoc:
       
       def self.included(mod)
         mod.extend(ClassMethods)
@@ -11,7 +11,7 @@ module Sergi #:nocdoc:
       # will load the relevant instance methods
       # defined below when invoked
       module ClassMethods
-        def acts_as_friendable(options = {})
+        def acts_as_top_friend(options = {})
           class_inheritable_accessor :on_friend_request_callback, 
             :on_friend_approval_callback, 
             :on_friend_denial_callback, 
@@ -26,8 +26,8 @@ module Sergi #:nocdoc:
           has_many :pending_friend_requests, :class_name =>  'Friendship', :conditions => 'accepted = false'
           has_many :friends, :through => :friendships, :source => 'friend', :conditions => 'accepted = true'
           has_many :top_friends, :through => :friendships, :source => 'friend', :conditions => 'accepted = true AND top = true'
-          include Sergi::Acts::Friendable::InstanceMethods
-          extend Sergi::Acts::Friendable::SingletonMethods
+          include Sergi::Acts::TopFriend::InstanceMethods
+          extend Sergi::Acts::TopFriend::SingletonMethods
         end
       end
       
@@ -129,5 +129,5 @@ end
 # them available to all our models if they want it
 
 ActiveRecord::Base.class_eval do
-  include Sergi::Acts::Friendable
+  include Sergi::Acts::TopFriend
 end
