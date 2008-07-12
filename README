@@ -1,4 +1,4 @@
-ActsAsTopFriend
+HasFriends
 ================
 
-Description goes here
+friends plugin for rails
